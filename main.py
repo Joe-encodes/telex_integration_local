@@ -2,6 +2,10 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import requests, json, os
 from datetime import datetime
+import os
+
+google_api_key = os.getenv("GOOGLE_API_KEY")
+aimlapi_api_key = os.getenv("AIMLAPI_API_KEY")
 
 app = FastAPI()
 
