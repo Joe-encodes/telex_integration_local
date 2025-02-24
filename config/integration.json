@@ -8,7 +8,7 @@
         "app_description": "Automatically finds websites linking to competitors, prioritizes high-value prospects, and drafts personalized outreach emails using AI. Sends daily summaries to Telex with 1-click email actions.",
         "app_logo": "https://media-hosting.imagekit.io//e8903cf272b44f8c/logo.png?Expires=1834745018&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=ZPpCGLckIm0bccJEiQKW-95yYQsk8sL4tncDDh0hzCURZwLceGtx67Imwfinl5Lm7mK1z8-4r9rvzsdNCMVAcw1O0WFqay4ff2HSfB0g9tlxKii9fK2enX3PrmroZKZnbf4SEWeAhpEX4gTcIxrFD2RNkBGMcHHXsLUc9JydK-4y40XEltPTEQY-4Ih8wwy4opzflLymV3~tfamvO-fF5pSZNJaj~BEHBiRNgoRhqZZFMxe8lZKeKUsx4T6FHu2vzw6SfEYnTy4dwxO32rfPP4HpJY5ADmgkMA1MKw0kzkEWZvdYmKp33QdWiKZOu3kdqAsvrHZdgeoWXNEiouzxhQ__",
         "app_name": "Google Backlink Monitor",
-        "app_url": "https://telex-integration-local-x1uc.vercel.app",
+        "app_url": "telex-integration-local-x1uc.vercel.app",
         "background_color": "#4285F4"
       },
       "integration_category": "Monitoring & Logging",
@@ -90,7 +90,7 @@
           "default": "https://api.aimlapi.com/generate"
         }
       ],
-      "tick_url": "https://telex-integration-local-x1uc.vercel.app/tick",
+      "tick_url": "telex-integration-local-x1uc.vercel.app/tick",
       "target_url": ""
     }
   }
