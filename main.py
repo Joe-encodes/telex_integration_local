@@ -4,6 +4,9 @@ import requests, json, os
 from datetime import datetime
 import logging
 
+from dotenv import load_dotenv
+load_dotenv()
+
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -27,9 +30,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 # Load config
-CONFIG_PATH = "config/integration_config.json"  # Updated file name
+CONFIG_PATH = "config/integration.json"  # Updated file name
 def load_config():
     try:
         with open(CONFIG_PATH, "r") as file:
@@ -37,6 +39,7 @@ def load_config():
     except Exception as e:
         logger.error(f"Failed to load config: {e}")
         raise HTTPException(status_code=500, detail="Failed to load config")
+
 
 # Retrieve webhook URL
 def get_webhook_url(channel_id):
@@ -95,31 +98,25 @@ def draft_email(prospect):
 @app.post("/tick")
 def tick():
     try:
-        config = load_config()["data"]
-        channel_id = get_setting_value(config, "Channel ID")
-        if not channel_id:
-            raise HTTPException(status_code=400, detail="Missing Channel ID in settings")
-
-        # Step 1: Find competitor backlinks
-        competitor_domain = "competitor.com"  # Replace with actual competitor domain
-        backlinks = find_competitor_backlinks(competitor_domain)
-
-        # Step 2: Prioritize high-value prospects
-        high_value_prospects = backlinks[:5]  # Mock prioritization
-
-        # Step 3: Draft personalized emails
-        emails = [draft_email(prospect) for prospect in high_value_prospects]
-
-        # Step 4: Send daily summary to Telex
-        webhook_url = get_webhook_url(channel_id)
-        payload = {
-            "timestamp": datetime.now().isoformat(),
-            "message": "Daily summary",
-            "emails": emails
-        }
-        send_to_webhook(webhook_url, payload)
-
-        return {"message": "Tick executed successfully", "emails": emails}
+        logger.debug("Starting /tick endpoint")
+        
+        # Load config
+        config = load_config()
+        logger.debug(f"Loaded config: {json.dumps(config, indent=2)}")
+        
+        # Retrieve settings
+        search_query = get_setting_value(config, "Search Query")
+        result_limit = get_setting_value(config, "Result Limit")
+        aimlapi_endpoint = get_setting_value(config, "AIMLAPI Endpoint")
+        
+        logger.debug(f"Search Query: {search_query}")
+        logger.debug(f"Result Limit: {result_limit}")
+        logger.debug(f"AIMLAPI Endpoint: {aimlapi_endpoint}")
+        
+        # Your logic here...
+        
+        logger.debug("Completed /tick endpoint")
+        return {"message": "Tick executed successfully"}
     except Exception as e:
         logger.error(f"Error in /tick endpoint: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
