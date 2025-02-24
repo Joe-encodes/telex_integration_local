@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  telex-integration:
+    image: techyjboy/telex-integration:latest
+    container_name: telex_integration
+    build: .
+    command: ["python", "main.py"]
+    restart: always
+    environment:
+      - LOG_LEVEL=info
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./config/integration.json:/app/config/integration.json

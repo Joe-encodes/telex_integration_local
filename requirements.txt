@@ -1,0 +1,7 @@
+fastapi
+pyngrok
+uvicorn
+requests
+python-dotenv
+httpx
+setuptools

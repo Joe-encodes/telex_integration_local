@@ -1,0 +1,39 @@
+{
+  "data": {
+      "date": {
+          "created_at": "2024-01-01",
+          "updated_at": "2024-02-20"
+      },
+      "descriptions": {
+          "app_description": "Google-based interval integration for monitoring backlinks.",
+          "app_logo": "https://media-hosting.imagekit.io//e8903cf272b44f8c/logo.png?Expires=1834745018&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=ZPpCGLckIm0bccJEiQKW-95yYQsk8sL4tncDDh0hzCURZwLceGtx67Imwfinl5Lm7mK1z8-4r9rvzsdNCMVAcw1O0WFqay4ff2HSfB0g9tlxKii9fK2enX3PrmroZKZnbf4SEWeAhpEX4gTcIxrFD2RNkBGMcHHXsLUc9JydK-4y40XEltPTEQY-4Ih8wwy4opzflLymV3~tfamvO-fF5pSZNJaj~BEHBiRNgoRhqZZFMxe8lZKeKUsx4T6FHu2vzw6SfEYnTy4dwxO32rfPP4HpJY5ADmgkMA1MKw0kzkEWZvdYmKp33QdWiKZOu3kdqAsvrHZdgeoWXNEiouzxhQ__",
+          "app_name": "Google Backlink Monitor",
+          "app_url": "https://example.com",
+          "background_color": "#4285F4"
+      },
+      "integration_category": "Monitoring & Logging",
+      "integration_type": "interval",
+      "is_active": true,
+      "output": [
+          { "label": "Slack", "value": true },
+          { "label": "Email", "value": true }
+      ],
+      "key_features": [
+          "Monitor backlinks using Google search.",
+          "Schedule recurring checks using cron syntax.",
+          "Send notifications to selected output channels.",
+          "Customizable sensitivity levels."
+      ],
+      "permissions": {
+          "monitoring_user": {
+              "always_online": true,
+              "display_name": "Performance Monitor"
+          }
+      },
+      "settings": [
+          { "label": "interval", "type": "text", "required": true, "default": "* * * * *" },
+          { "label": "Sensitivity Level", "type": "dropdown", "required": true, "default": "Low", "options": ["High", "Low"] },
+          { "label": "Alert Admin", "type": "multi-checkbox", "required": true, "default": "Super-Admin", "options": ["Super-Admin", "Admin", "Manager", "Developer"] }
+      ]
+  }
+}

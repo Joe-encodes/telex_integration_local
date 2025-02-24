@@ -1,0 +1,9 @@
+[
+  { "label": "Google API Key", "type": "text", "required": true, "default": "AIzaSyAAVZ9o88x-Y-7De8W17C-ED7AEtiZV4ug" },
+  { "label": "Search Query", "type": "text", "required": true, "default": "link:datadoghq.com OR link:newrelic.com OR link:splunk.com -site:datadoghq.com -site:newrelic.com -site:splunk.com" },
+  { "label": "Result Limit", "type": "number", "required": true, "default": 10 },
+  { "label": "AIMLAPI Endpoint", "type": "text", "required": true, "default": "https://api.aimlapi.com/generate" },
+  { "label": "AIMLAPI API Key", "type": "text", "required": true, "default": "279e7ea7f4bb4504a24d8c091aa632a7" }
+
+]
+
