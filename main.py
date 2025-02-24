@@ -2,7 +2,6 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import requests, json, os
 from datetime import datetime
-import os
 
 google_api_key = os.getenv("GOOGLE_API_KEY")
 aimlapi_api_key = os.getenv("AIMLAPI_API_KEY")
@@ -38,13 +37,20 @@ def send_to_webhook(webhook_url, payload):
     if response.status_code != 200:
         raise HTTPException(status_code=response.status_code, detail="Failed to send data to webhook")
 
+# Get setting value by label
+def get_setting_value(config, label):
+    for setting in config["data"]["settings"]:
+        if setting["label"] == label:
+            return setting.get("value", setting.get("default"))
+    raise HTTPException(status_code=400, detail=f"Setting '{label}' not found in config")
+
 # Interval tick endpoint
 @app.post("/tick")
 def tick():
     config = load_config()["data"]
-    channel_id = config.get("channel_id")
+    channel_id = get_setting_value(config, "Channel ID")  # Retrieve Channel ID from settings
     if not channel_id:
-        raise HTTPException(status_code=400, detail="Missing channel_id in config")
+        raise HTTPException(status_code=400, detail="Missing Channel ID in settings")
 
     webhook_url = get_webhook_url(channel_id)
     payload = {
