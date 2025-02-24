@@ -26,7 +26,7 @@ def load_config():
 
 # Retrieve webhook URL
 def get_webhook_url(channel_id):
-    url = f"https://backend-im.duckdns.org/webhooks/{channel_id}"
+    url = f"https://telex.im/dashboard/channels/webhooks/{channel_id}"
     response = requests.get(url)
     if response.status_code == 200:
         return response.json().get("webhook_url")
