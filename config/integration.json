@@ -69,8 +69,26 @@
           "label": "Channel ID",
           "type": "text",
           "required": true,
-          "default": "01950faa-7d4f-716e-808e-93aa020ba0ae"
+          "default": "01953957-1e98-7e1a-bb4e-8f83083a1e16"
         },
+        {
+            "label": "Search Engine ID (CX)",
+            "type": "text",
+            "required": true,
+            "default": "b6df5883a068940c8"
+          },
+          {
+            "label": "Google API Key",
+            "type": "text",
+            "required": false,  
+            "default": ""       
+          },
+          {
+            "label": "AIMLAPI Key",
+            "type": "text",
+            "required": false,  
+            "default": ""       
+          },
         {
           "label": "Search Query",
           "type": "text",
@@ -88,7 +106,13 @@
           "type": "text",
           "required": true,
           "default": "https://api.aimlapi.com/generate"
-        }
+        },
+        {
+        "label": "Sites to Monitor",
+        "type": "text",
+        "required": true,
+        "default": "datadoghq.com/*,newrelic.com/*,splunk.com/*,appdynamics.com/*,dynatrace.com/*,sumologic.com/*,techcrunch.com/*,venturebeat.com/*,zdnet.com/*,github.com/*,apache.org/*,prometheus.io/*,g2.com/*,capterra.com/*,trustradius.com/*,medium.com/*,towardsdatascience.com/*,dev.to/*,reddit.com/r/devops/*,stackoverflow.com/*,hackernews.ycombinator.com/*"
+      }
       ],
       "tick_url": "https://telex-integration-local.vercel.app/tick",
       "target_url": ""
