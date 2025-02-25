@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import requests, json, os
 from datetime import datetime
-import logging
+import logging, time
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -107,13 +107,32 @@ def get_setting_value(config, label, env_var=None):
     raise ValueError(f"Setting '{label}' not found in config and no environment variable provided")
 
 # Find competitor backlinks using Google API
-def find_competitor_backlinks(cx, google_api_key, sites, max_results=5):
+def find_competitor_backlinks(cx, google_api_key, sites, max_results=5, max_retries=3):
     try:
+        # Construct the search query
         search_query = " OR ".join([f"link:{site}" for site in sites])
         url = f"https://www.googleapis.com/customsearch/v1?q={search_query}&key={google_api_key}&cx={cx}&num={max_results}"
-        response = requests.get(url)
-        response.raise_for_status()
-        return response.json().get("items", [])
+        
+        # Retry logic with exponential backoff
+        for attempt in range(max_retries):
+            try:
+                response = requests.get(url)
+                response.raise_for_status()  # Raise an error for bad status codes
+                return response.json().get("items", [])
+            except requests.exceptions.HTTPError as e:
+                if response.status_code == 429:  # Rate limit exceeded
+                    wait_time = 2 ** attempt  # Exponential backoff (1s, 2s, 4s, etc.)
+                    logger.warning(f"Rate limit exceeded. Retrying in {wait_time} seconds...")
+                    time.sleep(wait_time)
+                else:
+                    raise  # Re-raise other HTTP errors
+            except Exception as e:
+                logger.error(f"API request failed: {e}")
+                raise
+        
+        # If all retries fail
+        logger.error(f"Failed after {max_retries} retries.")
+        raise HTTPException(status_code=500, detail="Failed to fetch competitor backlinks after retries")
     except Exception as e:
         logger.error(f"Failed to fetch competitor backlinks: {e}")
         raise HTTPException(status_code=500, detail="Failed to fetch competitor backlinks")
@@ -152,12 +171,12 @@ def tick():
         # Retrieve settings
         cx = get_setting_value(config, "Search Engine ID (CX)")
         google_api_key = get_setting_value(config, "Google API Key", "GOOGLE_API_KEY")
-        aimlapi_key = get_setting_value(config, "AIMLAPI Key", "AIMLAPI_API_KEY")
+        aimlapi_key = get_setting_value(config, "AIMLAPI Key", "AIMLAPI_KEY")
         sites = get_setting_value(config, "Sites to Monitor").split(",")
         channel_id = get_setting_value(config, "Channel ID")
         
-        # Find backlinks
-        backlinks = find_competitor_backlinks(cx, google_api_key, sites)
+        # Find backlinks with rate limiting
+        backlinks = find_competitor_backlinks(cx, google_api_key, sites, max_results=5, max_retries=3)
         
         # Draft emails
         emails = []

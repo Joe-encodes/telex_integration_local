@@ -93,7 +93,7 @@
           "label": "Search Query",
           "type": "text",
           "required": true,
-          "default": "link:datadoghq.com OR link:newrelic.com OR link:splunk.com -site:datadoghq.com -site:newrelic.com -site:splunk.com"
+          "default": "link:datadoghq.com"
         },
         {
           "label": "Result Limit",
@@ -111,7 +111,7 @@
         "label": "Sites to Monitor",
         "type": "text",
         "required": true,
-        "default": "datadoghq.com/*,newrelic.com/*,splunk.com/*,appdynamics.com/*,dynatrace.com/*,sumologic.com/*,techcrunch.com/*"
+        "default": "datadoghq.com/*"
       }
       ],
       "tick_url": "https://telex-integration-local.vercel.app/tick",
