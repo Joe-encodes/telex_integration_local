@@ -43,27 +43,50 @@ def load_config():
 
 # Retrieve webhook URL
 def get_webhook_url(channel_id):
-    return f"https://ping.telex.im/v1/webhooks/{channel_id}"
+    return f"https://api.telex.im/v1/webhooks/{channel_id}"
 
 # Send data to webhook
 def send_to_webhook(webhook_url, backlinks, emails):
     try:
-        message = f"New Backlinks Found: {len(backlinks)}\n" + "\n".join(
-            f"{bl.get('title')} | {bl.get('link')} | {email[:50]}"
-            for bl, email in zip(backlinks, emails)
-        )
+        # Split the message into chunks of 5 backlinks each
+        chunk_size = 5
+        for i in range(0, len(backlinks), chunk_size):
+            # Get a chunk of backlinks and emails
+            backlinks_chunk = backlinks[i:i + chunk_size]
+            emails_chunk = emails[i:i + chunk_size]
+            
+            # Build the message for this chunk
+            message_lines = [f"New Backlinks Found (Part {i//chunk_size + 1}): {len(backlinks)}"]
+            
+            for bl, email in zip(backlinks_chunk, emails_chunk):
+                title = bl.get("title", "Untitled")
+                link = bl.get("link", "#")
+                email_preview = email if email else "Error Occurred: Free-tier limit"
+                message_lines.append(f"{title} | {link} | {email_preview}")
+            
+            # Join lines with newline characters
+            message = "\n".join(message_lines)
+            
+            # Send this chunk to Telex
+            response = requests.post(
+                webhook_url,
+                json={
+                    "event_name": "RawBacklinkData",
+                    "status": "success",
+                    "username": "DataBot",
+                    "message": message
+                },
+                headers={
+                    "Content-Type": "application/json",
+                    "X-Telex-Version": "2023-12-01"
+                }
+            )
+            
+            # Validate the response
+            if response.status_code != 200:
+                logger.error(f"Telex API error: {response.status_code} - {response.text}")
+                return False
         
-        response = requests.post(
-            webhook_url,
-            json={
-                "event_name": "RawBacklinkData",
-                "status": "success",
-                "username": "DataBot",
-                "message": message
-            },
-            headers={"Content-Type": "application/json"}
-        )
-        response.raise_for_status()
         return True
     except Exception as e:
         logger.error(f"Webhook error: {e}")

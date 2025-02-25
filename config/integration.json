@@ -69,7 +69,7 @@
           "label": "Channel ID",
           "type": "text",
           "required": true,
-          "default": "01953957-1e98-7e1a-bb4e-8f83083a1e16"
+          "default": "01951917-8a60-7fd7-bec2-9c2639d0f806"
         },
         {
             "label": "Search Engine ID (CX)",
