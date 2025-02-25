@@ -111,7 +111,7 @@
         "label": "Sites to Monitor",
         "type": "text",
         "required": true,
-        "default": "datadoghq.com/*,newrelic.com/*,splunk.com/*,appdynamics.com/*,dynatrace.com/*,sumologic.com/*,techcrunch.com/*,venturebeat.com/*,zdnet.com/*,github.com/*,apache.org/*,prometheus.io/*,g2.com/*,capterra.com/*,trustradius.com/*,medium.com/*,towardsdatascience.com/*,dev.to/*,reddit.com/r/devops/*,stackoverflow.com/*,hackernews.ycombinator.com/*"
+        "default": "datadoghq.com/*,newrelic.com/*,splunk.com/*,appdynamics.com/*,dynatrace.com/*,sumologic.com/*,techcrunch.com/*"
       }
       ],
       "tick_url": "https://telex-integration-local.vercel.app/tick",
