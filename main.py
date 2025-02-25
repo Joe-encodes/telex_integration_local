@@ -176,7 +176,11 @@ def tick():
         channel_id = get_setting_value(config, "Channel ID")
         
         # Find backlinks with rate limiting
-        backlinks = find_competitor_backlinks(cx, google_api_key, sites, max_results=5, max_retries=3)
+        backlinks = find_competitor_backlinks(cx, google_api_key, sites, max_results=5, max_retries=5)
+        
+        if not backlinks:
+            logger.warning("No backlinks found. Skipping email drafting and webhook sending.")
+            return {"message": "No backlinks found", "backlinks": [], "emails": []}
         
         # Draft emails
         emails = []
@@ -197,7 +201,7 @@ def tick():
     except Exception as e:
         logger.error(f"Error in /tick: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
-
+    
 # Health check endpoint
 @app.get("/status")
 def status():
